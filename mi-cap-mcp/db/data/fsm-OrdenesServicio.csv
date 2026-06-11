@@ -1,0 +1,6 @@
+ID;Numero;cliente_ID;tipoServicio_ID;tecnico_ID;estado_code;prioridad_code;Descripcion;FechaApertura;FechaCompromiso;FechaCierre;CostoTotal
+30000000-0000-0000-0000-000000000001;OS-2026-101;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa;20000000-0000-0000-0000-000000000001;;NUEVA;ALTA;Instalación de equipo nuevo en recepción;2026-06-10T09:00:00Z;2026-06-12T09:00:00Z;;
+30000000-0000-0000-0000-000000000002;OS-2026-102;bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb;20000000-0000-0000-0000-000000000002;cccccccc-cccc-cccc-cccc-cccccccccccc;ASIGNADA;MEDIA;Mantenimiento preventivo trimestral;2026-06-09T11:30:00Z;2026-06-12T11:30:00Z;;
+30000000-0000-0000-0000-000000000003;OS-2026-103;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa;20000000-0000-0000-0000-000000000003;dddddddd-dddd-dddd-dddd-dddddddddddd;EN_SITIO;URGENTE;Avería crítica: equipo no enciende;2026-06-11T08:00:00Z;2026-06-11T16:00:00Z;;
+30000000-0000-0000-0000-000000000004;OS-2026-104;bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb;20000000-0000-0000-0000-000000000001;cccccccc-cccc-cccc-cccc-cccccccccccc;CERRADA;BAJA;Instalación finalizada y conforme;2026-06-05T10:00:00Z;2026-06-07T10:00:00Z;2026-06-06T15:30:00Z;381.40
+30000000-0000-0000-0000-000000000005;OS-2026-105;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa;20000000-0000-0000-0000-000000000002;;NUEVA;MEDIA;Revisión programada de climatización;2026-06-11T07:45:00Z;2026-06-14T07:45:00Z;;

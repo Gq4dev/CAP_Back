@@ -2,38 +2,134 @@
   controllerName="fsm.desktop.controller.Detalle"
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc"
+  xmlns:uxap="sap.uxap"
   xmlns:form="sap.ui.layout.form">
-  <Page id="pageDetalle" title="{i18n>tituloDetalle}" showNavButton="true" navButtonPress=".onVolver">
+  <Page id="pageDetalle" showHeader="true" title="{i18n>tituloDetalle}" showNavButton="true" navButtonPress=".onVolver">
     <content>
-      <ObjectHeader title="{Numero}" intro="{cliente/Nombre}" responsive="true">
-        <statuses>
+      <uxap:ObjectPageLayout id="objectPage" upperCaseAnchorBar="false" showTitleInHeaderContent="true">
+
+        <uxap:headerTitle>
+          <uxap:ObjectPageDynamicHeaderTitle>
+            <uxap:heading>
+              <Title text="{Numero}" level="H1"/>
+            </uxap:heading>
+            <uxap:snappedContent>
+              <ObjectStatus
+                text="{estado/name}"
+                state="{ path: 'estado/criticidad', formatter: '.formatter.estadoState' }"/>
+            </uxap:snappedContent>
+            <uxap:expandedContent>
+              <Text text="{cliente/Nombre}"/>
+            </uxap:expandedContent>
+          </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent>
           <ObjectStatus
+            title="{i18n>lblEstado}"
             text="{estado/name}"
             state="{ path: 'estado/criticidad', formatter: '.formatter.estadoState' }"/>
-          <ObjectStatus text="{prioridad/name}"/>
-        </statuses>
-      </ObjectHeader>
+          <ObjectStatus title="{i18n>lblPrioridad}" text="{prioridad/name}"/>
+          <ObjectStatus title="{i18n>lblTecnico}" text="{= ${tecnico/Nombre} || ${i18n>sinTecnico} }"/>
+          <ObjectNumber
+            class="sapUiMediumMarginBegin"
+            number="{ path: 'CostoTotal', type: 'sap.ui.model.odata.type.Decimal', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }"
+            unit="EUR"
+            emphasized="true"/>
+        </uxap:headerContent>
 
-      <form:SimpleForm editable="false" layout="ColumnLayout" title="{i18n>seccionDatos}">
-        <Label text="{i18n>lblCliente}"/>
-        <Text text="{cliente/Nombre}"/>
-        <Label text="{i18n>lblEquipo}"/>
-        <Text text="{equipo/Descripcion}"/>
-        <Label text="{i18n>lblServicio}"/>
-        <Text text="{tipoServicio/Nombre}"/>
-        <Label text="{i18n>lblTecnico}"/>
-        <Text text="{= ${tecnico/Nombre} || ${i18n>sinTecnico} }"/>
-        <Label text="{i18n>lblApertura}"/>
-        <Text text="{ path: 'FechaApertura', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: { style: 'short' } }"/>
-        <Label text="{i18n>lblCompromiso}"/>
-        <Text text="{ path: 'FechaCompromiso', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: { style: 'short' } }"/>
-        <Label text="{i18n>lblCierre}"/>
-        <Text text="{ path: 'FechaCierre', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: { style: 'short' } }"/>
-        <Label text="{i18n>lblCostoTotal}"/>
-        <ObjectNumber number="{ path: 'CostoTotal', type: 'sap.ui.model.odata.type.Decimal', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" unit="EUR"/>
-        <Label text="{i18n>lblDescripcion}"/>
-        <Text text="{Descripcion}"/>
-      </form:SimpleForm>
+        <uxap:sections>
+
+          <!-- Datos de la orden -->
+          <uxap:ObjectPageSection title="{i18n>seccionDatos}">
+            <uxap:subSections>
+              <uxap:ObjectPageSubSection>
+                <uxap:blocks>
+                  <form:SimpleForm editable="false" layout="ColumnLayout" columnsM="2" columnsL="2" columnsXL="2">
+                    <Label text="{i18n>lblCliente}"/>
+                    <Text text="{cliente/Nombre}"/>
+                    <Label text="{i18n>lblEquipo}"/>
+                    <Text text="{= ${equipo/Descripcion} || '—' }"/>
+                    <Label text="{i18n>lblServicio}"/>
+                    <Text text="{tipoServicio/Nombre}"/>
+                    <Label text="{i18n>lblApertura}"/>
+                    <Text text="{ path: 'FechaApertura', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: { style: 'short' } }"/>
+                    <Label text="{i18n>lblCompromiso}"/>
+                    <Text text="{ path: 'FechaCompromiso', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: { style: 'short' } }"/>
+                    <Label text="{i18n>lblCierre}"/>
+                    <Text text="{= ${path:'FechaCierre', type:'sap.ui.model.odata.type.DateTimeOffset', formatOptions:{style:'short'}} || '—' }"/>
+                    <Label text="{i18n>lblDescripcion}"/>
+                    <Text text="{Descripcion}"/>
+                  </form:SimpleForm>
+                </uxap:blocks>
+              </uxap:ObjectPageSubSection>
+            </uxap:subSections>
+          </uxap:ObjectPageSection>
+
+          <!-- Repuestos consumidos -->
+          <uxap:ObjectPageSection title="{i18n>seccionRepuestos}">
+            <uxap:subSections>
+              <uxap:ObjectPageSubSection>
+                <uxap:blocks>
+                  <Table id="tablaRepuestos" items="{ path: 'repuestos', parameters: { $expand: 'producto' } }">
+                    <noData><Text text="{i18n>sinRepuestos}"/></noData>
+                    <columns>
+                      <Column><Text text="{i18n>colProducto}"/></Column>
+                      <Column hAlign="End"><Text text="{i18n>colCantidad}"/></Column>
+                      <Column hAlign="End"><Text text="{i18n>colPrecio}"/></Column>
+                      <Column hAlign="End"><Text text="{i18n>colSubtotal}"/></Column>
+                    </columns>
+                    <items>
+                      <ColumnListItem>
+                        <cells>
+                          <ObjectIdentifier title="{producto/Nombre}" text="{producto/Categoria}"/>
+                          <Text text="{Cantidad}"/>
+                          <ObjectNumber
+                            number="{ path: 'PrecioUnit', type: 'sap.ui.model.odata.type.Decimal', formatOptions: { minFractionDigits: 2 } }"
+                            unit="EUR"/>
+                          <ObjectNumber
+                            number="{ path: 'Subtotal', type: 'sap.ui.model.odata.type.Decimal', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }"
+                            unit="EUR"/>
+                        </cells>
+                      </ColumnListItem>
+                    </items>
+                  </Table>
+                </uxap:blocks>
+              </uxap:ObjectPageSubSection>
+            </uxap:subSections>
+          </uxap:ObjectPageSection>
+
+          <!-- Registros de tiempo -->
+          <uxap:ObjectPageSection title="{i18n>seccionTiempos}">
+            <uxap:subSections>
+              <uxap:ObjectPageSubSection>
+                <uxap:blocks>
+                  <Table id="tablaTiempos" items="{ path: 'tiempos', parameters: { $expand: 'tecnico' } }">
+                    <noData><Text text="{i18n>sinTiempos}"/></noData>
+                    <columns>
+                      <Column><Text text="{i18n>colTecnico}"/></Column>
+                      <Column><Text text="{i18n>colFecha}"/></Column>
+                      <Column hAlign="End"><Text text="{i18n>colHoras}"/></Column>
+                      <Column><Text text="{i18n>colNotas}"/></Column>
+                    </columns>
+                    <items>
+                      <ColumnListItem>
+                        <cells>
+                          <Text text="{tecnico/Nombre}"/>
+                          <Text text="{ path: 'Fecha', type: 'sap.ui.model.odata.type.Date', formatOptions: { style: 'medium' } }"/>
+                          <Text text="{Horas}"/>
+                          <Text text="{Notas}"/>
+                        </cells>
+                      </ColumnListItem>
+                    </items>
+                  </Table>
+                </uxap:blocks>
+              </uxap:ObjectPageSubSection>
+            </uxap:subSections>
+          </uxap:ObjectPageSection>
+
+        </uxap:sections>
+      </uxap:ObjectPageLayout>
     </content>
 
     <footer>

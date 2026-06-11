@@ -141,6 +141,7 @@ entity LineasRepuesto : cuid {
   producto   : Association to Productos;
   Cantidad   : Integer;
   PrecioUnit : Decimal(10, 2);
+  Subtotal   : Decimal(12, 2) = Cantidad * PrecioUnit;  // calculado on-read
 }
 
 /** Registro de horas trabajadas por un técnico en una orden. */
