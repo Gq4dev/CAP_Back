@@ -1,0 +1,48 @@
+<mvc:View
+  controllerName="fsm.desktop.controller.Detalle"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:form="sap.ui.layout.form">
+  <Page id="pageDetalle" title="{i18n>tituloDetalle}" showNavButton="true" navButtonPress=".onVolver">
+    <content>
+      <ObjectHeader title="{Numero}" intro="{cliente/Nombre}" responsive="true">
+        <statuses>
+          <ObjectStatus
+            text="{estado/name}"
+            state="{ path: 'estado/criticidad', formatter: '.formatter.estadoState' }"/>
+          <ObjectStatus text="{prioridad/name}"/>
+        </statuses>
+      </ObjectHeader>
+
+      <form:SimpleForm editable="false" layout="ColumnLayout" title="{i18n>seccionDatos}">
+        <Label text="{i18n>lblCliente}"/>
+        <Text text="{cliente/Nombre}"/>
+        <Label text="{i18n>lblEquipo}"/>
+        <Text text="{equipo/Descripcion}"/>
+        <Label text="{i18n>lblServicio}"/>
+        <Text text="{tipoServicio/Nombre}"/>
+        <Label text="{i18n>lblTecnico}"/>
+        <Text text="{= ${tecnico/Nombre} || ${i18n>sinTecnico} }"/>
+        <Label text="{i18n>lblApertura}"/>
+        <Text text="{ path: 'FechaApertura', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: { style: 'short' } }"/>
+        <Label text="{i18n>lblCompromiso}"/>
+        <Text text="{ path: 'FechaCompromiso', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: { style: 'short' } }"/>
+        <Label text="{i18n>lblCierre}"/>
+        <Text text="{ path: 'FechaCierre', type: 'sap.ui.model.odata.type.DateTimeOffset', formatOptions: { style: 'short' } }"/>
+        <Label text="{i18n>lblCostoTotal}"/>
+        <ObjectNumber number="{ path: 'CostoTotal', type: 'sap.ui.model.odata.type.Decimal', formatOptions: { minFractionDigits: 2, maxFractionDigits: 2 } }" unit="EUR"/>
+        <Label text="{i18n>lblDescripcion}"/>
+        <Text text="{Descripcion}"/>
+      </form:SimpleForm>
+    </content>
+
+    <footer>
+      <OverflowToolbar>
+        <ToolbarSpacer/>
+        <Button text="{i18n>accAsignar}" icon="sap-icon://employee" press=".onAsignar"/>
+        <Button text="{i18n>accIniciar}" icon="sap-icon://begin" press=".onIniciar"/>
+        <Button text="{i18n>accCerrar}" type="Emphasized" icon="sap-icon://accept" press=".onCerrar"/>
+      </OverflowToolbar>
+    </footer>
+  </Page>
+</mvc:View>

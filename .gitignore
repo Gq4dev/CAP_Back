@@ -1,0 +1,24 @@
+# Dependencias
+node_modules/
+
+# Artefactos de build / runtime CAP
+gen/
+dist/
+
+# Bases de datos locales
+*.db
+*.sqlite
+*.sqlite3
+
+# Entorno y logs
+.env
+.env.*
+*.log
+
+# Credenciales BTP / despliegue
+default-env.json
+.cdsrc-private.json
+
+# Sistema operativo / editor
+.DS_Store
+Thumbs.db

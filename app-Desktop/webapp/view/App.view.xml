@@ -1,0 +1,7 @@
+<mvc:View
+  controllerName="fsm.desktop.controller.App"
+  displayBlock="true"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc">
+  <App id="appNav"/>
+</mvc:View>

@@ -1,0 +1,53 @@
+<mvc:View
+  controllerName="fsm.desktop.controller.Ordenes"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc">
+  <Page id="pageOrdenes" title="{i18n>appTitle}">
+    <content>
+      <Table
+        id="tablaOrdenes"
+        growing="true"
+        growingThreshold="25"
+        items="{
+          path: '/OrdenesServicio',
+          parameters: { $expand: 'estado,prioridad,tecnico,cliente' },
+          sorter: { path: 'FechaApertura', descending: true }
+        }">
+        <headerToolbar>
+          <OverflowToolbar>
+            <Title text="{i18n>tituloOrdenes}" level="H2"/>
+            <ToolbarSpacer/>
+            <SearchField width="20rem" placeholder="{i18n>buscarPlaceholder}" search=".onBuscar"/>
+            <Button icon="sap-icon://refresh" tooltip="{i18n>refrescar}" press=".onRefrescar"/>
+          </OverflowToolbar>
+        </headerToolbar>
+        <columns>
+          <Column><Text text="{i18n>colNumero}"/></Column>
+          <Column><Text text="{i18n>colCliente}"/></Column>
+          <Column><Text text="{i18n>colEstado}"/></Column>
+          <Column><Text text="{i18n>colPrioridad}"/></Column>
+          <Column><Text text="{i18n>colTecnico}"/></Column>
+          <Column hAlign="End"><Text text="{i18n>colSLA}"/></Column>
+        </columns>
+        <items>
+          <ColumnListItem type="Navigation" press=".onAbrirOrden">
+            <cells>
+              <ObjectIdentifier title="{Numero}" text="{Descripcion}"/>
+              <Text text="{cliente/Nombre}"/>
+              <ObjectStatus
+                text="{estado/name}"
+                state="{ path: 'estado/criticidad', formatter: '.formatter.estadoState' }"/>
+              <Text text="{prioridad/name}"/>
+              <Text text="{= ${tecnico/Nombre} || ${i18n>sinTecnico} }"/>
+              <Text text="{
+                path: 'FechaCompromiso',
+                type: 'sap.ui.model.odata.type.DateTimeOffset',
+                formatOptions: { style: 'short' }
+              }"/>
+            </cells>
+          </ColumnListItem>
+        </items>
+      </Table>
+    </content>
+  </Page>
+</mvc:View>

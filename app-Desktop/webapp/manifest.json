@@ -1,0 +1,73 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "fsm.desktop",
+    "type": "application",
+    "title": "{i18n>appTitle}",
+    "description": "{i18n>appDescription}",
+    "applicationVersion": { "version": "0.1.0" },
+    "dataSources": {
+      "mainService": {
+        "uri": "/servicio-campo/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": { "desktop": true, "tablet": true, "phone": false }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "fsm.desktop.view.App",
+      "type": "XML",
+      "id": "app",
+      "async": true
+    },
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.ui.layout": {},
+        "sap.f": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": { "bundleName": "fsm.desktop.i18n.i18n" }
+      },
+      "": {
+        "dataSource": "mainService",
+        "type": "sap.ui.model.odata.v4.ODataModel",
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "groupId": "$auto"
+        }
+      }
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "viewPath": "fsm.desktop.view",
+        "controlId": "appNav",
+        "controlAggregation": "pages",
+        "async": true
+      },
+      "routes": [
+        { "name": "ordenes", "pattern": "", "target": "ordenes" },
+        { "name": "detalle", "pattern": "OrdenesServicio({key})", "target": "detalle" }
+      ],
+      "targets": {
+        "ordenes": { "viewName": "Ordenes", "viewId": "ordenes" },
+        "detalle": { "viewName": "Detalle", "viewId": "detalle" }
+      }
+    }
+  }
+}

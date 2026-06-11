@@ -1,0 +1,14 @@
+{
+  "name": "app-desktop",
+  "version": "0.1.0",
+  "description": "Field Service — App de Despacho (Freestyle UI5)",
+  "private": true,
+  "scripts": {
+    "start": "ui5 serve -o index.html",
+    "build": "ui5 build --clean-dest"
+  },
+  "devDependencies": {
+    "@ui5/cli": "^3.11.0",
+    "@sap/ux-ui5-tooling": "^1.15.0"
+  }
+}
