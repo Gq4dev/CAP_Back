@@ -1,0 +1,6 @@
+code;name;descr;criticidad
+BORRADOR;Borrador;Pedido en preparación;0
+ENVIADO;Enviado;Enviado al proveedor;0
+CONFIRMADO;Confirmado;Confirmado por el proveedor;0
+RECIBIDO;Recibido;Mercancía recibida e ingresada a stock;3
+CANCELADO;Cancelado;Pedido anulado;1

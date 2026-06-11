@@ -1,0 +1,13 @@
+---
+applications:
+  - name: mi-cap-mcp
+    memory: 512M
+    disk_quota: 512M
+    # No escalar horizontalmente: las sesiones MCP viven en memoria de un solo
+    # proceso. Con varias instancias el balanceador devolvería -32001 constante.
+    instances: 1
+    buildpacks:
+      - nodejs_buildpack
+    command: npm start
+    env:
+      NODE_ENV: production

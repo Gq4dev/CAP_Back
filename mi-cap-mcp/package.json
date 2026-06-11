@@ -1,0 +1,46 @@
+{
+  "name": "mi-cap-mcp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cds-serve"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": ":memory:"
+        }
+      },
+      "auth": {
+        "kind": "mocked",
+        "users": {
+          "despacho": { "password": "despacho", "roles": ["Despachador"] },
+          "tecnico":  { "password": "tecnico",  "roles": ["Tecnico"] },
+          "almacen":  { "password": "almacen",  "roles": ["Almacen"] },
+          "manager":  { "password": "manager",  "roles": ["Manager"] }
+        }
+      },
+      "[production]": {
+        "auth": "dummy"
+      }
+    },
+    "mcp": {
+      "transports": [
+        "streamable-http"
+      ]
+    }
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@cap-js/sqlite": "^2.4.0",
+    "@gavdi/cap-mcp": "^1.6.0",
+    "@sap/cds": "^9.9.1",
+    "express": "^5.2.1"
+  }
+}

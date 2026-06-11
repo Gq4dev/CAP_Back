@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Capabilities.V1.xml">
+    <edmx:Include Alias="Capabilities" Namespace="Org.OData.Capabilities.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+    <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+    <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+  </edmx:Reference>
+  <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+    <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+  </edmx:Reference>
+  <edmx:DataServices>
+    <Schema Namespace="ServicioCampoService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+      <Annotation Term="Core.Links">
+        <Collection>
+          <Record>
+            <PropertyValue Property="rel" String="author"/>
+            <PropertyValue Property="href" String="https://cap.cloud.sap"/>
+          </Record>
+        </Collection>
+      </Annotation>
+      <EntityContainer Name="EntityContainer">
+        <EntitySet Name="Productos" EntityType="ServicioCampoService.Productos">
+          <NavigationPropertyBinding Path="ProveedorPref" Target="Proveedores"/>
+        </EntitySet>
+        <EntitySet Name="Proveedores" EntityType="ServicioCampoService.Proveedores">
+          <NavigationPropertyBinding Path="pedidos" Target="PedidosCompra"/>
+        </EntitySet>
+        <EntitySet Name="PedidosCompra" EntityType="ServicioCampoService.PedidosCompra">
+          <NavigationPropertyBinding Path="proveedor" Target="Proveedores"/>
+          <NavigationPropertyBinding Path="estado" Target="EstadosPedido"/>
+          <NavigationPropertyBinding Path="lineas" Target="LineasPedido"/>
+        </EntitySet>
+        <EntitySet Name="LineasPedido" EntityType="ServicioCampoService.LineasPedido">
+          <NavigationPropertyBinding Path="pedido" Target="PedidosCompra"/>
+          <NavigationPropertyBinding Path="producto" Target="Productos"/>
+        </EntitySet>
+        <EntitySet Name="Clientes" EntityType="ServicioCampoService.Clientes">
+          <NavigationPropertyBinding Path="equipos" Target="Equipos"/>
+          <NavigationPropertyBinding Path="ordenes" Target="OrdenesServicio"/>
+        </EntitySet>
+        <EntitySet Name="Equipos" EntityType="ServicioCampoService.Equipos">
+          <NavigationPropertyBinding Path="cliente" Target="Clientes"/>
+        </EntitySet>
+        <EntitySet Name="Tecnicos" EntityType="ServicioCampoService.Tecnicos">
+          <NavigationPropertyBinding Path="disponibilidad" Target="DisponibilidadTecnico"/>
+          <NavigationPropertyBinding Path="habilidades" Target="TecnicoHabilidades"/>
+          <NavigationPropertyBinding Path="ordenes" Target="OrdenesServicio"/>
+        </EntitySet>
+        <EntitySet Name="Habilidades" EntityType="ServicioCampoService.Habilidades"/>
+        <EntitySet Name="TecnicoHabilidades" EntityType="ServicioCampoService.TecnicoHabilidades">
+          <NavigationPropertyBinding Path="tecnico" Target="Tecnicos"/>
+          <NavigationPropertyBinding Path="habilidad" Target="Habilidades"/>
+        </EntitySet>
+        <EntitySet Name="CatalogoServicios" EntityType="ServicioCampoService.CatalogoServicios"/>
+        <EntitySet Name="OrdenesServicio" EntityType="ServicioCampoService.OrdenesServicio">
+          <NavigationPropertyBinding Path="cliente" Target="Clientes"/>
+          <NavigationPropertyBinding Path="equipo" Target="Equipos"/>
+          <NavigationPropertyBinding Path="tipoServicio" Target="CatalogoServicios"/>
+          <NavigationPropertyBinding Path="tecnico" Target="Tecnicos"/>
+          <NavigationPropertyBinding Path="estado" Target="EstadosOrden"/>
+          <NavigationPropertyBinding Path="prioridad" Target="Prioridades"/>
+          <NavigationPropertyBinding Path="repuestos" Target="LineasRepuesto"/>
+          <NavigationPropertyBinding Path="tiempos" Target="RegistrosTiempo"/>
+        </EntitySet>
+        <EntitySet Name="LineasRepuesto" EntityType="ServicioCampoService.LineasRepuesto">
+          <NavigationPropertyBinding Path="orden" Target="OrdenesServicio"/>
+          <NavigationPropertyBinding Path="producto" Target="Productos"/>
+        </EntitySet>
+        <EntitySet Name="RegistrosTiempo" EntityType="ServicioCampoService.RegistrosTiempo">
+          <NavigationPropertyBinding Path="orden" Target="OrdenesServicio"/>
+          <NavigationPropertyBinding Path="tecnico" Target="Tecnicos"/>
+        </EntitySet>
+        <EntitySet Name="EstadosOrden" EntityType="ServicioCampoService.EstadosOrden">
+          <NavigationPropertyBinding Path="texts" Target="EstadosOrden_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="EstadosOrden_texts"/>
+        </EntitySet>
+        <EntitySet Name="Prioridades" EntityType="ServicioCampoService.Prioridades">
+          <NavigationPropertyBinding Path="texts" Target="Prioridades_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="Prioridades_texts"/>
+        </EntitySet>
+        <EntitySet Name="EstadosPedido" EntityType="ServicioCampoService.EstadosPedido">
+          <NavigationPropertyBinding Path="texts" Target="EstadosPedido_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="EstadosPedido_texts"/>
+        </EntitySet>
+        <EntitySet Name="DisponibilidadTecnico" EntityType="ServicioCampoService.DisponibilidadTecnico">
+          <NavigationPropertyBinding Path="texts" Target="DisponibilidadTecnico_texts"/>
+          <NavigationPropertyBinding Path="localized" Target="DisponibilidadTecnico_texts"/>
+        </EntitySet>
+        <EntitySet Name="EstadosOrden_texts" EntityType="ServicioCampoService.EstadosOrden_texts"/>
+        <EntitySet Name="Prioridades_texts" EntityType="ServicioCampoService.Prioridades_texts"/>
+        <EntitySet Name="EstadosPedido_texts" EntityType="ServicioCampoService.EstadosPedido_texts"/>
+        <EntitySet Name="DisponibilidadTecnico_texts" EntityType="ServicioCampoService.DisponibilidadTecnico_texts"/>
+        <FunctionImport Name="productosPorCategoria" Function="ServicioCampoService.productosPorCategoria" EntitySet="Productos"/>
+        <FunctionImport Name="ordenesDeTecnico" Function="ServicioCampoService.ordenesDeTecnico" EntitySet="OrdenesServicio"/>
+        <FunctionImport Name="productosBajoMinimo" Function="ServicioCampoService.productosBajoMinimo" EntitySet="Productos"/>
+        <FunctionImport Name="ordenesSlaVencido" Function="ServicioCampoService.ordenesSlaVencido" EntitySet="OrdenesServicio"/>
+        <ActionImport Name="generarReposicion" Action="ServicioCampoService.generarReposicion" EntitySet="PedidosCompra"/>
+      </EntityContainer>
+      <EntityType Name="Productos">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="ID" Type="Edm.Int32" Nullable="false"/>
+        <Property Name="Nombre" Type="Edm.String" MaxLength="100"/>
+        <Property Name="Categoria" Type="Edm.String" MaxLength="50"/>
+        <Property Name="Precio" Type="Edm.Decimal" Precision="10" Scale="2"/>
+        <Property Name="Costo" Type="Edm.Decimal" Precision="10" Scale="2"/>
+        <Property Name="Stock" Type="Edm.Int32"/>
+        <Property Name="StockMinimo" Type="Edm.Int32" DefaultValue="0"/>
+        <NavigationProperty Name="ProveedorPref" Type="ServicioCampoService.Proveedores">
+          <ReferentialConstraint Property="ProveedorPref_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="ProveedorPref_ID" Type="Edm.Guid"/>
+      </EntityType>
+      <EntityType Name="Proveedores">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Nombre" Type="Edm.String" MaxLength="120"/>
+        <Property Name="Contacto" Type="Edm.String" MaxLength="120"/>
+        <Property Name="Email" Type="Edm.String" MaxLength="120"/>
+        <Property Name="Telefono" Type="Edm.String" MaxLength="40"/>
+        <Property Name="Calificacion" Type="Edm.Decimal" Precision="2" Scale="1"/>
+        <Property Name="Activo" Type="Edm.Boolean" DefaultValue="true"/>
+        <NavigationProperty Name="pedidos" Type="Collection(ServicioCampoService.PedidosCompra)" Partner="proveedor"/>
+      </EntityType>
+      <EntityType Name="PedidosCompra">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Numero" Type="Edm.String" MaxLength="20"/>
+        <NavigationProperty Name="proveedor" Type="ServicioCampoService.Proveedores" Partner="pedidos">
+          <ReferentialConstraint Property="proveedor_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="proveedor_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="estado" Type="ServicioCampoService.EstadosPedido">
+          <ReferentialConstraint Property="estado_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="estado_code" Type="Edm.String" MaxLength="20" DefaultValue="BORRADOR"/>
+        <Property Name="Fecha" Type="Edm.Date"/>
+        <Property Name="Total" Type="Edm.Decimal" Precision="12" Scale="2"/>
+        <NavigationProperty Name="lineas" Type="Collection(ServicioCampoService.LineasPedido)" Partner="pedido">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="LineasPedido">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <NavigationProperty Name="pedido" Type="ServicioCampoService.PedidosCompra" Partner="lineas">
+          <ReferentialConstraint Property="pedido_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="pedido_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="producto" Type="ServicioCampoService.Productos">
+          <ReferentialConstraint Property="producto_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="producto_ID" Type="Edm.Int32"/>
+        <Property Name="Cantidad" Type="Edm.Int32"/>
+        <Property Name="PrecioUnit" Type="Edm.Decimal" Precision="10" Scale="2"/>
+      </EntityType>
+      <EntityType Name="Clientes">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Nombre" Type="Edm.String" MaxLength="120"/>
+        <Property Name="Email" Type="Edm.String" MaxLength="120"/>
+        <Property Name="Telefono" Type="Edm.String" MaxLength="40"/>
+        <Property Name="Direccion" Type="Edm.String" MaxLength="200"/>
+        <NavigationProperty Name="equipos" Type="Collection(ServicioCampoService.Equipos)" Partner="cliente">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="ordenes" Type="Collection(ServicioCampoService.OrdenesServicio)" Partner="cliente"/>
+      </EntityType>
+      <EntityType Name="Equipos">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Descripcion" Type="Edm.String" MaxLength="150"/>
+        <Property Name="NumeroSerie" Type="Edm.String" MaxLength="60"/>
+        <NavigationProperty Name="cliente" Type="ServicioCampoService.Clientes" Partner="equipos">
+          <ReferentialConstraint Property="cliente_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="cliente_ID" Type="Edm.Guid"/>
+        <Property Name="Ubicacion" Type="Edm.String" MaxLength="200"/>
+        <Property Name="FechaInstalacion" Type="Edm.Date"/>
+      </EntityType>
+      <EntityType Name="Tecnicos">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Nombre" Type="Edm.String" MaxLength="120"/>
+        <Property Name="Email" Type="Edm.String" MaxLength="120"/>
+        <Property Name="Telefono" Type="Edm.String" MaxLength="40"/>
+        <Property Name="Zona" Type="Edm.String" MaxLength="60"/>
+        <NavigationProperty Name="disponibilidad" Type="ServicioCampoService.DisponibilidadTecnico">
+          <ReferentialConstraint Property="disponibilidad_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="disponibilidad_code" Type="Edm.String" MaxLength="20" DefaultValue="DISPONIBLE"/>
+        <NavigationProperty Name="habilidades" Type="Collection(ServicioCampoService.TecnicoHabilidades)" Partner="tecnico">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="ordenes" Type="Collection(ServicioCampoService.OrdenesServicio)" Partner="tecnico"/>
+      </EntityType>
+      <EntityType Name="Habilidades">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="Nombre" Type="Edm.String" MaxLength="80"/>
+        <Property Name="Descripcion" Type="Edm.String" MaxLength="200"/>
+      </EntityType>
+      <EntityType Name="TecnicoHabilidades">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <NavigationProperty Name="tecnico" Type="ServicioCampoService.Tecnicos" Partner="habilidades">
+          <ReferentialConstraint Property="tecnico_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="tecnico_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="habilidad" Type="ServicioCampoService.Habilidades">
+          <ReferentialConstraint Property="habilidad_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="habilidad_ID" Type="Edm.Guid"/>
+        <Property Name="nivel" Type="Edm.Int32"/>
+      </EntityType>
+      <EntityType Name="CatalogoServicios">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Nombre" Type="Edm.String" MaxLength="120"/>
+        <Property Name="Descripcion" Type="Edm.String" MaxLength="300"/>
+        <Property Name="Categoria" Type="Edm.String" MaxLength="60"/>
+        <Property Name="TarifaHora" Type="Edm.Decimal" Precision="10" Scale="2"/>
+        <Property Name="SlaHoras" Type="Edm.Int32"/>
+        <Property Name="Activo" Type="Edm.Boolean" DefaultValue="true"/>
+      </EntityType>
+      <EntityType Name="OrdenesServicio">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+        <Property Name="Numero" Type="Edm.String" MaxLength="20"/>
+        <NavigationProperty Name="cliente" Type="ServicioCampoService.Clientes" Partner="ordenes">
+          <ReferentialConstraint Property="cliente_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="cliente_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="equipo" Type="ServicioCampoService.Equipos">
+          <ReferentialConstraint Property="equipo_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="equipo_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="tipoServicio" Type="ServicioCampoService.CatalogoServicios">
+          <ReferentialConstraint Property="tipoServicio_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="tipoServicio_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="tecnico" Type="ServicioCampoService.Tecnicos" Partner="ordenes">
+          <ReferentialConstraint Property="tecnico_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="tecnico_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="estado" Type="ServicioCampoService.EstadosOrden">
+          <ReferentialConstraint Property="estado_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="estado_code" Type="Edm.String" MaxLength="20" DefaultValue="NUEVA"/>
+        <NavigationProperty Name="prioridad" Type="ServicioCampoService.Prioridades">
+          <ReferentialConstraint Property="prioridad_code" ReferencedProperty="code"/>
+        </NavigationProperty>
+        <Property Name="prioridad_code" Type="Edm.String" MaxLength="20" DefaultValue="MEDIA"/>
+        <Property Name="Descripcion" Type="Edm.String" MaxLength="500"/>
+        <Property Name="FechaApertura" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="FechaCompromiso" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="FechaCierre" Type="Edm.DateTimeOffset" Precision="7"/>
+        <Property Name="CostoTotal" Type="Edm.Decimal" Precision="12" Scale="2"/>
+        <NavigationProperty Name="repuestos" Type="Collection(ServicioCampoService.LineasRepuesto)" Partner="orden">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="tiempos" Type="Collection(ServicioCampoService.RegistrosTiempo)" Partner="orden">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="LineasRepuesto">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <NavigationProperty Name="orden" Type="ServicioCampoService.OrdenesServicio" Partner="repuestos">
+          <ReferentialConstraint Property="orden_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="orden_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="producto" Type="ServicioCampoService.Productos">
+          <ReferentialConstraint Property="producto_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="producto_ID" Type="Edm.Int32"/>
+        <Property Name="Cantidad" Type="Edm.Int32"/>
+        <Property Name="PrecioUnit" Type="Edm.Decimal" Precision="10" Scale="2"/>
+      </EntityType>
+      <EntityType Name="RegistrosTiempo">
+        <Key>
+          <PropertyRef Name="ID"/>
+        </Key>
+        <Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+        <NavigationProperty Name="orden" Type="ServicioCampoService.OrdenesServicio" Partner="tiempos">
+          <ReferentialConstraint Property="orden_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="orden_ID" Type="Edm.Guid"/>
+        <NavigationProperty Name="tecnico" Type="ServicioCampoService.Tecnicos">
+          <ReferentialConstraint Property="tecnico_ID" ReferencedProperty="ID"/>
+        </NavigationProperty>
+        <Property Name="tecnico_ID" Type="Edm.Guid"/>
+        <Property Name="Fecha" Type="Edm.Date"/>
+        <Property Name="Horas" Type="Edm.Decimal" Precision="4" Scale="2"/>
+        <Property Name="Notas" Type="Edm.String" MaxLength="300"/>
+      </EntityType>
+      <EntityType Name="EstadosOrden">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="criticidad" Type="Edm.Int32" DefaultValue="0"/>
+        <NavigationProperty Name="texts" Type="Collection(ServicioCampoService.EstadosOrden_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="ServicioCampoService.EstadosOrden_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="Prioridades">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="nivel" Type="Edm.Int32"/>
+        <Property Name="criticidad" Type="Edm.Int32" DefaultValue="0"/>
+        <NavigationProperty Name="texts" Type="Collection(ServicioCampoService.Prioridades_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="ServicioCampoService.Prioridades_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="EstadosPedido">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="criticidad" Type="Edm.Int32" DefaultValue="0"/>
+        <NavigationProperty Name="texts" Type="Collection(ServicioCampoService.EstadosPedido_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="ServicioCampoService.EstadosPedido_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="DisponibilidadTecnico">
+        <Key>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+        <Property Name="criticidad" Type="Edm.Int32" DefaultValue="0"/>
+        <NavigationProperty Name="texts" Type="Collection(ServicioCampoService.DisponibilidadTecnico_texts)">
+          <OnDelete Action="Cascade"/>
+        </NavigationProperty>
+        <NavigationProperty Name="localized" Type="ServicioCampoService.DisponibilidadTecnico_texts">
+          <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+        </NavigationProperty>
+      </EntityType>
+      <EntityType Name="EstadosOrden_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="Prioridades_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="EstadosPedido_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+      </EntityType>
+      <EntityType Name="DisponibilidadTecnico_texts">
+        <Key>
+          <PropertyRef Name="locale"/>
+          <PropertyRef Name="code"/>
+        </Key>
+        <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+        <Property Name="name" Type="Edm.String" MaxLength="255"/>
+        <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+        <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
+      </EntityType>
+      <Action Name="recibir" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="ServicioCampoService.PedidosCompra"/>
+        <ReturnType Type="ServicioCampoService.PedidosCompra"/>
+      </Action>
+      <Action Name="asignar" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="ServicioCampoService.OrdenesServicio"/>
+        <Parameter Name="tecnicoID" Type="Edm.Guid"/>
+        <ReturnType Type="ServicioCampoService.OrdenesServicio"/>
+      </Action>
+      <Action Name="iniciar" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="ServicioCampoService.OrdenesServicio"/>
+        <ReturnType Type="ServicioCampoService.OrdenesServicio"/>
+      </Action>
+      <Action Name="cerrar" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="ServicioCampoService.OrdenesServicio"/>
+        <ReturnType Type="ServicioCampoService.OrdenesServicio"/>
+      </Action>
+      <Function Name="productosPorCategoria" IsBound="false" IsComposable="false">
+        <Parameter Name="categoria" Type="Edm.String"/>
+        <ReturnType Type="Collection(ServicioCampoService.Productos)"/>
+      </Function>
+      <Function Name="ordenesDeTecnico" IsBound="false" IsComposable="false">
+        <Parameter Name="tecnicoID" Type="Edm.Guid"/>
+        <ReturnType Type="Collection(ServicioCampoService.OrdenesServicio)"/>
+      </Function>
+      <Function Name="productosBajoMinimo" IsBound="false" IsComposable="false">
+        <ReturnType Type="Collection(ServicioCampoService.Productos)"/>
+      </Function>
+      <Function Name="ordenesSlaVencido" IsBound="false" IsComposable="false">
+        <ReturnType Type="Collection(ServicioCampoService.OrdenesServicio)"/>
+      </Function>
+      <Action Name="generarReposicion" IsBound="false">
+        <ReturnType Type="Collection(ServicioCampoService.PedidosCompra)"/>
+      </Action>
+      <Annotations Target="ServicioCampoService.Productos/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Productos/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Productos/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Productos/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Proveedores/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Proveedores/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Proveedores/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Proveedores/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Proveedores/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.PedidosCompra/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.PedidosCompra/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.PedidosCompra/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.PedidosCompra/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.PedidosCompra/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.PedidosCompra/estado_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="EstadosPedido"/>
+            <PropertyValue Property="CollectionPath" String="EstadosPedido"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="estado_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.LineasPedido/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Clientes/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Clientes/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Clientes/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Clientes/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Clientes/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Equipos/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Equipos/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Equipos/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Equipos/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Equipos/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Tecnicos/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Tecnicos/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Tecnicos/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Tecnicos/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Tecnicos/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Tecnicos/disponibilidad_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="DisponibilidadTecnico"/>
+            <PropertyValue Property="CollectionPath" String="DisponibilidadTecnico"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="disponibilidad_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Habilidades/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.TecnicoHabilidades/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.CatalogoServicios/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.CatalogoServicios/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.CatalogoServicios/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.CatalogoServicios/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.CatalogoServicios/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.OrdenesServicio/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.OrdenesServicio/createdAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.OrdenesServicio/createdBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Immutable" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.OrdenesServicio/modifiedAt">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.OrdenesServicio/modifiedBy">
+        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+        <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
+        <Annotation Term="Core.Computed" Bool="true"/>
+        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.OrdenesServicio/estado_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="EstadosOrden"/>
+            <PropertyValue Property="CollectionPath" String="EstadosOrden"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="estado_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.OrdenesServicio/prioridad_code">
+        <Annotation Term="Common.ValueList">
+          <Record Type="Common.ValueListType">
+            <PropertyValue Property="Label" String="Prioridades"/>
+            <PropertyValue Property="CollectionPath" String="Prioridades"/>
+            <PropertyValue Property="Parameters">
+              <Collection>
+                <Record Type="Common.ValueListParameterInOut">
+                  <PropertyValue Property="LocalDataProperty" PropertyPath="prioridad_code"/>
+                  <PropertyValue Property="ValueListProperty" String="code"/>
+                </Record>
+                <Record Type="Common.ValueListParameterDisplayOnly">
+                  <PropertyValue Property="ValueListProperty" String="name"/>
+                </Record>
+              </Collection>
+            </PropertyValue>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.LineasRepuesto/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.RegistrosTiempo/ID">
+        <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosOrden">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EntityContainer/EstadosOrden">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosOrden/name">
+        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosOrden/descr">
+        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Prioridades">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EntityContainer/Prioridades">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Prioridades/name">
+        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Prioridades/descr">
+        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosPedido">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EntityContainer/EstadosPedido">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosPedido/name">
+        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosPedido/descr">
+        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.DisponibilidadTecnico">
+        <Annotation Term="UI.Identification">
+          <Collection>
+            <Record Type="UI.DataField">
+              <PropertyValue Property="Value" Path="name"/>
+            </Record>
+          </Collection>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EntityContainer/DisponibilidadTecnico">
+        <Annotation Term="Capabilities.DeleteRestrictions">
+          <Record Type="Capabilities.DeleteRestrictionsType">
+            <PropertyValue Property="Deletable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.InsertRestrictions">
+          <Record Type="Capabilities.InsertRestrictionsType">
+            <PropertyValue Property="Insertable" Bool="false"/>
+          </Record>
+        </Annotation>
+        <Annotation Term="Capabilities.UpdateRestrictions">
+          <Record Type="Capabilities.UpdateRestrictionsType">
+            <PropertyValue Property="Updatable" Bool="false"/>
+          </Record>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.DisponibilidadTecnico/name">
+        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.DisponibilidadTecnico/descr">
+        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.productosPorCategoria(Edm.String)/categoria">
+        <Annotation Term="Core.OptionalParameter">
+          <Record Type="Core.OptionalParameterType"/>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.ordenesDeTecnico(Edm.Guid)/tecnicoID">
+        <Annotation Term="Core.OptionalParameter">
+          <Record Type="Core.OptionalParameterType"/>
+        </Annotation>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosOrden_texts/locale">
+        <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosOrden_texts/name">
+        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosOrden_texts/descr">
+        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Prioridades_texts/locale">
+        <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Prioridades_texts/name">
+        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.Prioridades_texts/descr">
+        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosPedido_texts/locale">
+        <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosPedido_texts/name">
+        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.EstadosPedido_texts/descr">
+        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.DisponibilidadTecnico_texts/locale">
+        <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.DisponibilidadTecnico_texts/name">
+        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.DisponibilidadTecnico_texts/descr">
+        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+      </Annotations>
+    </Schema>
+  </edmx:DataServices>
+</edmx:Edmx>

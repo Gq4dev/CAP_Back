@@ -1,0 +1,5 @@
+code;name;descr;nivel;criticidad
+BAJA;Baja;Sin impacto operativo;1;0
+MEDIA;Media;Impacto moderado;2;0
+ALTA;Alta;Impacto alto, atender pronto;3;2
+URGENTE;Urgente;Servicio detenido, atención inmediata;4;1

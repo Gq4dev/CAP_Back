@@ -1,0 +1,4 @@
+code;name;descr;criticidad
+DISPONIBLE;Disponible;Listo para tomar órdenes;3
+OCUPADO;Ocupado;Atendiendo una orden;2
+AUSENTE;Ausente;No disponible (licencia, descanso);1

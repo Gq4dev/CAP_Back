@@ -1,0 +1,4 @@
+ID;Nombre;Descripcion;Categoria;TarifaHora;SlaHoras;Activo
+20000000-0000-0000-0000-000000000001;Instalación;Puesta en marcha de equipo nuevo en sitio;Instalacion;60.00;48;true
+20000000-0000-0000-0000-000000000002;Mantenimiento preventivo;Revisión programada para prevenir fallos;Mantenimiento;45.00;72;true
+20000000-0000-0000-0000-000000000003;Reparación urgente;Atención inmediata por avería crítica;Reparacion;90.00;8;true

@@ -1,0 +1,23 @@
+{
+  "xsappname": "mi-cap-mcp",
+  "tenant-mode": "dedicated",
+  "description": "Backend Field Service — seguridad XSUAA (producción)",
+  "scopes": [
+    { "name": "$XSAPPNAME.Despachador", "description": "Gestiona y asigna órdenes de servicio" },
+    { "name": "$XSAPPNAME.Tecnico", "description": "Ejecuta órdenes en campo" },
+    { "name": "$XSAPPNAME.Almacen", "description": "Gestiona inventario y recepción de compras" },
+    { "name": "$XSAPPNAME.Manager", "description": "Acceso completo de gestión" }
+  ],
+  "role-templates": [
+    { "name": "Despachador", "description": "Despachador", "scope-references": ["$XSAPPNAME.Despachador"] },
+    { "name": "Tecnico", "description": "Técnico de campo", "scope-references": ["$XSAPPNAME.Tecnico"] },
+    { "name": "Almacen", "description": "Personal de almacén", "scope-references": ["$XSAPPNAME.Almacen"] },
+    { "name": "Manager", "description": "Manager", "scope-references": ["$XSAPPNAME.Manager"] }
+  ],
+  "role-collections": [
+    { "name": "FSM_Despachador", "description": "Field Service - Despachador", "role-template-references": ["$XSAPPNAME.Despachador"] },
+    { "name": "FSM_Tecnico", "description": "Field Service - Técnico", "role-template-references": ["$XSAPPNAME.Tecnico"] },
+    { "name": "FSM_Almacen", "description": "Field Service - Almacén", "role-template-references": ["$XSAPPNAME.Almacen"] },
+    { "name": "FSM_Manager", "description": "Field Service - Manager", "role-template-references": ["$XSAPPNAME.Manager"] }
+  ]
+}

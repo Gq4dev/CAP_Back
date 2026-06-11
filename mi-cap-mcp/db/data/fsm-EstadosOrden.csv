@@ -1,0 +1,8 @@
+code;name;descr;criticidad
+NUEVA;Nueva;Orden registrada, sin asignar;0
+ASIGNADA;Asignada;Técnico asignado, pendiente de inicio;0
+EN_CAMINO;En camino;Técnico desplazándose al sitio;0
+EN_SITIO;En sitio;Trabajo en ejecución;0
+EN_ESPERA;En espera;Bloqueada (repuestos, cliente, etc.);2
+CERRADA;Cerrada;Servicio completado y conforme;3
+CANCELADA;Cancelada;Orden anulada;1
