@@ -1,0 +1,30 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <Dialog id="dlgTiempo" title="{i18n>dlgTiempoTitulo}" contentWidth="26rem">
+    <content>
+      <VBox class="sapUiSmallMargin">
+        <Label text="{i18n>colTecnico}" required="true" labelFor="selTecnicoTiempo"/>
+        <Select id="selTecnicoTiempo" width="100%" forceSelection="false"
+          items="{ path: '/Tecnicos', sorter: { path: 'Nombre' } }">
+          <core:Item key="{ID}" text="{Nombre}"/>
+        </Select>
+
+        <Label text="{i18n>colFecha}" class="sapUiSmallMarginTop"/>
+        <DatePicker id="dpFecha" valueFormat="yyyy-MM-dd" displayFormat="medium" width="12rem"/>
+
+        <Label text="{i18n>colHoras}" required="true" class="sapUiSmallMarginTop"/>
+        <StepInput id="inpHoras" value="1" min="0" step="0.5" max="999" width="8rem"/>
+
+        <Label text="{i18n>colNotas}" class="sapUiSmallMarginTop"/>
+        <TextArea id="taNotasTiempo" rows="2" width="100%"/>
+      </VBox>
+    </content>
+    <beginButton>
+      <Button text="{i18n>btnRegistrar}" type="Emphasized" press=".onConfirmarTiempo"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>btnCancelar}" press=".onCancelarTiempo"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

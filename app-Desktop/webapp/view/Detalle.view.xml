@@ -71,7 +71,18 @@
             <uxap:subSections>
               <uxap:ObjectPageSubSection>
                 <uxap:blocks>
-                  <Table id="tablaRepuestos" items="{ path: 'repuestos', parameters: { $expand: 'producto' } }">
+                  <Table id="tablaRepuestos"
+                    mode="{= (${estado_code} === 'CERRADA' || ${estado_code} === 'CANCELADA') ? 'None' : 'Delete' }"
+                    delete=".onQuitarRepuesto"
+                    items="{ path: 'repuestos', parameters: { $expand: 'producto' } }">
+                    <headerToolbar>
+                      <OverflowToolbar>
+                        <ToolbarSpacer/>
+                        <Button text="{i18n>btnAgregarMaterial}" icon="sap-icon://add"
+                          enabled="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"
+                          press=".onAgregarMaterial"/>
+                      </OverflowToolbar>
+                    </headerToolbar>
                     <noData><Text text="{i18n>sinRepuestos}"/></noData>
                     <columns>
                       <Column><Text text="{i18n>colProducto}"/></Column>
@@ -104,7 +115,18 @@
             <uxap:subSections>
               <uxap:ObjectPageSubSection>
                 <uxap:blocks>
-                  <Table id="tablaTiempos" items="{ path: 'tiempos', parameters: { $expand: 'tecnico' } }">
+                  <Table id="tablaTiempos"
+                    mode="{= (${estado_code} === 'CERRADA' || ${estado_code} === 'CANCELADA') ? 'None' : 'Delete' }"
+                    delete=".onQuitarTiempo"
+                    items="{ path: 'tiempos', parameters: { $expand: 'tecnico' } }">
+                    <headerToolbar>
+                      <OverflowToolbar>
+                        <ToolbarSpacer/>
+                        <Button text="{i18n>btnRegistrarTiempo}" icon="sap-icon://add"
+                          enabled="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"
+                          press=".onRegistrarTiempo"/>
+                      </OverflowToolbar>
+                    </headerToolbar>
                     <noData><Text text="{i18n>sinTiempos}"/></noData>
                     <columns>
                       <Column><Text text="{i18n>colTecnico}"/></Column>
@@ -135,9 +157,14 @@
     <footer>
       <OverflowToolbar>
         <ToolbarSpacer/>
-        <Button text="{i18n>accAsignar}" icon="sap-icon://employee" press=".onAsignar"/>
-        <Button text="{i18n>accIniciar}" icon="sap-icon://begin" press=".onIniciar"/>
-        <Button text="{i18n>accCerrar}" type="Emphasized" icon="sap-icon://accept" press=".onCerrar"/>
+        <Button text="{i18n>accAsignar}" icon="sap-icon://employee" press=".onAsignar"
+          visible="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"/>
+        <Button text="{i18n>accIniciar}" icon="sap-icon://begin" press=".onIniciar"
+          visible="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"/>
+        <Button text="{i18n>accCerrar}" type="Emphasized" icon="sap-icon://accept" press=".onCerrar"
+          visible="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"/>
+        <Button text="{i18n>accReabrir}" type="Attention" icon="sap-icon://refresh" press=".onReabrir"
+          visible="{= (${estado_code} === 'CERRADA' || ${estado_code} === 'CANCELADA') &amp;&amp; ${user>/isAdmin} }"/>
       </OverflowToolbar>
     </footer>
   </Page>

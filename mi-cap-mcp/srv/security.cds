@@ -1,31 +1,33 @@
 using { ServicioCampoService } from './servicio-campo';
 
 /*
- * Capa de autorización del servicio (contrato de roles).
- * Roles del dominio: Despachador, Tecnico, Almacen, Manager.
+ * Capa de autorización del servicio.
  *
- * - Lectura/consulta: cualquier usuario autenticado.
- * - Acciones que mutan estado: restringidas al rol responsable del proceso.
+ * Estado actual (desarrollo): todo el servicio requiere usuario autenticado,
+ * y las acciones de negocio están abiertas a cualquier usuario autenticado
+ * para no frenar el desarrollo de la UI.
  *
- * En dev los roles se prueban con los usuarios mockeados de package.json
- * (despacho/tecnico/almacen/manager). En producción se mapean a scopes XSUAA
- * vía xs-security.json.
+ * El control granular por rol (Despachador, Tecnico, Almacen, Manager) queda
+ * definido en xs-security.json y se reactivará más adelante, junto con el
+ * ocultamiento/inhabilitado de botones por rol en el frontend. Para volver a
+ * activarlo, descomentar los bloques `@(requires: [...])` de abajo.
  */
 
 // Todo el servicio requiere usuario autenticado
 annotate ServicioCampoService with @requires: 'authenticated-user';
 
-// Acciones sobre la orden de servicio
+// Reabrir una orden es exclusivo de administradores (rol Manager)
 annotate ServicioCampoService.OrdenesServicio with actions {
-  asignar @(requires: ['Despachador', 'Manager']);
-  iniciar @(requires: ['Tecnico', 'Manager']);
-  cerrar  @(requires: ['Tecnico', 'Manager']);
+  reabrir @(requires: 'Manager');
 };
 
-// Recepción de mercancía
-annotate ServicioCampoService.PedidosCompra with actions {
-  recibir @(requires: ['Almacen', 'Manager']);
-};
-
-// Reposición automática de inventario
-annotate ServicioCampoService.generarReposicion with @requires: ['Almacen', 'Manager'];
+// --- RBAC granular (desactivado por ahora) ---
+// annotate ServicioCampoService.OrdenesServicio with actions {
+//   asignar @(requires: ['Despachador', 'Manager']);
+//   iniciar @(requires: ['Tecnico', 'Manager']);
+//   cerrar  @(requires: ['Tecnico', 'Manager']);
+// };
+// annotate ServicioCampoService.PedidosCompra with actions {
+//   recibir @(requires: ['Almacen', 'Manager']);
+// };
+// annotate ServicioCampoService.generarReposicion with @requires: ['Almacen', 'Manager'];

@@ -102,6 +102,14 @@ service ServicioCampoService {
       elicit     : ['confirm']
     }
     action cerrar() returns OrdenesServicio;
+
+    @mcp: {
+      name       : 'orden-reabrir',
+      description: 'Reabre una orden cerrada o cancelada (solo administradores)',
+      tool       : true,
+      elicit     : ['confirm']
+    }
+    action reabrir() returns OrdenesServicio;
   };
 
   entity LineasRepuesto  as projection on fsm.LineasRepuesto;
@@ -157,4 +165,10 @@ service ServicioCampoService {
     elicit     : ['confirm']
   }
   action generarReposicion() returns array of PedidosCompra;
+
+  /** Devuelve el usuario actual y si es administrador (rol Manager). */
+  function whoami() returns {
+    id      : String;
+    isAdmin : Boolean;
+  };
 }

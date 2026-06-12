@@ -27,14 +27,18 @@
       "id": "app",
       "async": true
     },
+    "resources": {
+      "css": [
+        { "uri": "css/style.css" }
+      ]
+    },
     "dependencies": {
       "minUI5Version": "1.120.0",
       "libs": {
         "sap.ui.core": {},
         "sap.m": {},
         "sap.ui.layout": {},
-        "sap.uxap": {},
-        "sap.f": {}
+        "sap.uxap": {}
       }
     },
     "models": {
@@ -48,7 +52,8 @@
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,
-          "groupId": "$auto"
+          "groupId": "$auto",
+          "earlyRequests": true
         }
       }
     },
@@ -59,13 +64,18 @@
         "viewPath": "fsm.desktop.view",
         "controlId": "appNav",
         "controlAggregation": "pages",
-        "async": true
+        "async": true,
+        "clearControlAggregation": true
       },
       "routes": [
-        { "name": "ordenes", "pattern": "", "target": "ordenes" },
+        { "name": "dashboard", "pattern": "", "target": "dashboard" },
+        { "name": "crear", "pattern": "crear", "target": "crear" },
+        { "name": "ordenes", "pattern": "ordenes/:filtro:", "target": "ordenes" },
         { "name": "detalle", "pattern": "OrdenesServicio({key})", "target": "detalle" }
       ],
       "targets": {
+        "dashboard": { "viewName": "Dashboard", "viewId": "dashboard" },
+        "crear": { "viewName": "Crear", "viewId": "crear" },
         "ordenes": { "viewName": "Ordenes", "viewId": "ordenes" },
         "detalle": { "viewName": "Detalle", "viewId": "detalle" }
       }

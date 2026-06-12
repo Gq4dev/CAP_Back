@@ -121,6 +121,24 @@ module.exports = cds.service.impl(async function () {
     return SELECT.one.from(req.subject);
   });
 
+  this.on('reabrir', OrdenesServicio, async (req) => {
+    const orden = await SELECT.one.from(req.subject);
+    if (!orden) return req.error(404, 'Orden no encontrada');
+    if (!['CERRADA', 'CANCELADA'].includes(orden.estado_code))
+      return req.error(409, 'Solo se puede reabrir una orden cerrada o cancelada');
+
+    // Vuelve a ASIGNADA si tenía técnico, si no a NUEVA
+    const nuevoEstado = orden.tecnico_ID ? 'ASIGNADA' : 'NUEVA';
+    await UPDATE(req.subject).with({ estado_code: nuevoEstado, FechaCierre: null });
+    return SELECT.one.from(req.subject);
+  });
+
+  // Usuario actual + flag de administrador (para gating en la UI)
+  this.on('whoami', (req) => ({
+    id: req.user.id,
+    isAdmin: req.user.is('Manager'),
+  }));
+
   //// ─────────────────  Recepción de pedido → stock  ───────────────── ////
 
   this.on('recibir', PedidosCompra, async (req) => {

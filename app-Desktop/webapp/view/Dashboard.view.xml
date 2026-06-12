@@ -1,0 +1,98 @@
+<mvc:View
+  controllerName="fsm.desktop.controller.Dashboard"
+  xmlns="sap.m"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns:core="sap.ui.core"
+  xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+  <Page id="pageDashboard" title="{i18n>dashTitulo}">
+    <headerContent>
+      <Button text="{i18n>verOrdenes}" type="Transparent" icon="sap-icon://list" press=".onVerOrdenes"/>
+      <Button icon="sap-icon://refresh" tooltip="{i18n>refrescar}" press=".onRefrescar"/>
+    </headerContent>
+    <content>
+      <FlexBox wrap="Wrap" alignItems="Start" class="sapUiSmallMargin">
+
+        <GenericTile class="sapUiTinyMargin kpiTile kpiAdd" header="{i18n>kpiNueva}" subheader="{i18n>kpiNuevaSub}" frameType="OneByOne" press=".onNuevaOrden">
+          <tileContent>
+            <TileContent>
+              <content>
+                <core:Icon src="sap-icon://add" size="2.75rem" color="#0a6ed1"/>
+              </content>
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile class="sapUiTinyMargin kpiTile kpiBlue" header="{i18n>kpiNuevas}" frameType="OneByOne" press=".onVerOrdenes" app:filtro="nuevas">
+          <tileContent>
+            <TileContent unit="{i18n>unidadOrdenes}">
+              <content>
+                <NumericContent value="{dash>/nuevas}" valueColor="Neutral" icon="sap-icon://create" withMargin="false"/>
+              </content>
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile class="sapUiTinyMargin kpiTile kpiOrange" header="{i18n>kpiEnCurso}" frameType="OneByOne" press=".onVerOrdenes" app:filtro="activas">
+          <tileContent>
+            <TileContent unit="{i18n>unidadOrdenes}">
+              <content>
+                <NumericContent value="{dash>/activas}" valueColor="Critical" icon="sap-icon://work-history" withMargin="false"/>
+              </content>
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile class="sapUiTinyMargin kpiTile kpiGreen" header="{i18n>kpiCerradas}" frameType="OneByOne" press=".onVerOrdenes" app:filtro="cerradas">
+          <tileContent>
+            <TileContent unit="{i18n>unidadOrdenes}">
+              <content>
+                <NumericContent value="{dash>/cerradas}" valueColor="Good" icon="sap-icon://sys-enter-2" withMargin="false"/>
+              </content>
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile class="sapUiTinyMargin kpiTile kpiRed" header="{i18n>kpiSla}" subheader="{i18n>kpiSlaSub}" frameType="OneByOne" press=".onVerOrdenes" app:filtro="activas">
+          <tileContent>
+            <TileContent unit="{i18n>unidadOrdenes}">
+              <content>
+                <NumericContent value="{dash>/slaVencido}" valueColor="Error" icon="sap-icon://alert" withMargin="false"/>
+              </content>
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile class="sapUiTinyMargin kpiTile kpiAmber" header="{i18n>kpiBajoMinimo}" subheader="{i18n>kpiBajoMinimoSub}" frameType="OneByOne">
+          <tileContent>
+            <TileContent unit="{i18n>unidadProductos}">
+              <content>
+                <NumericContent value="{dash>/bajoMinimo}" valueColor="Critical" icon="sap-icon://cart" withMargin="false"/>
+              </content>
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile class="sapUiTinyMargin kpiTile kpiTeal" header="{i18n>kpiTecnicos}" frameType="OneByOne">
+          <tileContent>
+            <TileContent unit="{i18n>unidadTecnicos}">
+              <content>
+                <NumericContent value="{dash>/tecnicosDisp}" valueColor="Good" icon="sap-icon://employee" withMargin="false"/>
+              </content>
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+        <GenericTile class="sapUiTinyMargin kpiTile kpiGrey" header="{i18n>kpiTotal}" frameType="OneByOne" press=".onVerOrdenes" app:filtro="all">
+          <tileContent>
+            <TileContent unit="{i18n>unidadOrdenes}">
+              <content>
+                <NumericContent value="{dash>/total}" valueColor="Neutral" icon="sap-icon://list" withMargin="false"/>
+              </content>
+            </TileContent>
+          </tileContent>
+        </GenericTile>
+
+      </FlexBox>
+    </content>
+  </Page>
+</mvc:View>

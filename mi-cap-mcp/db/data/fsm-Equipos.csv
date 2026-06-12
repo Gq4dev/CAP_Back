@@ -1,0 +1,4 @@
+ID;Descripcion;NumeroSerie;cliente_ID;Ubicacion;FechaInstalacion
+60000000-0000-0000-0000-000000000001;Climatizador Sala A;SN-CLI-001;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa;Planta 1 - Sala A;2025-03-15
+60000000-0000-0000-0000-000000000002;Servidor Rack 3;SN-SRV-003;aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa;CPD Central;2024-11-02
+60000000-0000-0000-0000-000000000003;Compresor Línea 2;SN-CMP-002;bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb;Nave industrial;2025-01-20

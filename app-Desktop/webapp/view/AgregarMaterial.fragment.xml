@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <Dialog id="dlgMaterial" title="{i18n>dlgMaterialTitulo}" contentWidth="26rem">
+    <content>
+      <VBox class="sapUiSmallMargin">
+        <Label text="{i18n>colProducto}" required="true" labelFor="selProducto"/>
+        <Select id="selProducto" width="100%" forceSelection="false" showSecondaryValues="true"
+          change=".onProductoSeleccionado"
+          items="{ path: '/Productos', sorter: { path: 'Nombre' } }">
+          <core:ListItem key="{ID}" text="{Nombre}" additionalText="{Precio}"/>
+        </Select>
+
+        <Label text="{i18n>colCantidad}" required="true" class="sapUiSmallMarginTop"/>
+        <StepInput id="inpCantidad" value="1" min="1" max="9999" width="8rem"/>
+
+        <Label text="{i18n>colPrecio}" class="sapUiSmallMarginTop"/>
+        <ObjectNumber number="{mat>/precio}" unit="EUR"/>
+      </VBox>
+    </content>
+    <beginButton>
+      <Button text="{i18n>btnAgregar}" type="Emphasized" press=".onConfirmarMaterial"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>btnCancelar}" press=".onCancelarMaterial"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>
