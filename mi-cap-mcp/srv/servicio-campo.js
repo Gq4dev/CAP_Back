@@ -12,6 +12,28 @@ module.exports = cds.service.impl(async function () {
   const año = () => new Date().getFullYear();
   const ESTADOS_CERRADOS = ['CERRADA', 'CANCELADA'];
 
+  // ¿El usuario actual es el técnico asignado a la orden (por email) o un Manager?
+  const esTecnicoAsignadoOAdmin = async (req, orden) => {
+    if (req.user.is('Manager')) return true;
+    if (!orden.tecnico_ID) return false;
+    const tec = await SELECT.one.from(Tecnicos).columns('ID').where({ Email: req.user.id });
+    return !!tec && tec.ID === orden.tecnico_ID;
+  };
+
+  // Guard de materiales/horas: la orden padre debe estar EN_SITIO y operarla
+  // el técnico asignado (o un Manager).
+  const guardLineaEnSitio = async (req) => {
+    const sOrdenID = req.data?.orden_ID
+      || (await SELECT.one.from(req.subject).columns('orden_ID'))?.orden_ID;
+    if (!sOrdenID) return req.error(400, 'Falta la orden de la línea');
+    const orden = await SELECT.one.from(OrdenesServicio).where({ ID: sOrdenID });
+    if (!orden) return req.error(404, 'Orden no encontrada');
+    if (orden.estado_code !== 'EN_SITIO')
+      return req.error(409, `Solo se pueden registrar materiales y horas con la orden EN_SITIO (estado actual: ${orden.estado_code})`);
+    if (!(await esTecnicoAsignadoOAdmin(req, orden)))
+      return req.error(403, 'Solo el técnico asignado puede registrar materiales y horas');
+  };
+
   //// ─────────────────  Tools MCP (consultas)  ───────────────── ////
 
   this.on('productosPorCategoria', (req) =>
@@ -56,8 +78,8 @@ module.exports = cds.service.impl(async function () {
     const { tecnicoID } = req.data;
     const orden = await SELECT.one.from(req.subject);
     if (!orden) return req.error(404, 'Orden no encontrada');
-    if (ESTADOS_CERRADOS.includes(orden.estado_code))
-      return req.error(409, `No se puede asignar una orden en estado ${orden.estado_code}`);
+    if (orden.estado_code !== 'NUEVA')
+      return req.error(409, `Solo se puede asignar una orden NUEVA (estado actual: ${orden.estado_code})`);
 
     const tec = await SELECT.one.from(Tecnicos).where({ ID: tecnicoID });
     if (!tec) return req.error(404, 'Técnico no encontrado');
@@ -73,8 +95,10 @@ module.exports = cds.service.impl(async function () {
     const orden = await SELECT.one.from(req.subject);
     if (!orden) return req.error(404, 'Orden no encontrada');
     if (!orden.tecnico_ID) return req.error(409, 'La orden no tiene técnico asignado');
-    if (ESTADOS_CERRADOS.includes(orden.estado_code))
-      return req.error(409, `La orden está ${orden.estado_code}`);
+    if (orden.estado_code !== 'ASIGNADA')
+      return req.error(409, `Solo se puede iniciar una orden ASIGNADA (estado actual: ${orden.estado_code})`);
+    if (!(await esTecnicoAsignadoOAdmin(req, orden)))
+      return req.error(403, 'Solo el técnico asignado puede iniciar la orden');
 
     await UPDATE(req.subject).with({ estado_code: 'EN_SITIO' });
     return SELECT.one.from(req.subject);
@@ -83,7 +107,10 @@ module.exports = cds.service.impl(async function () {
   this.on('cerrar', OrdenesServicio, async (req) => {
     const orden = await SELECT.one.from(req.subject);
     if (!orden) return req.error(404, 'Orden no encontrada');
-    if (orden.estado_code === 'CERRADA') return req.error(409, 'La orden ya está cerrada');
+    if (orden.estado_code !== 'EN_SITIO')
+      return req.error(409, `Solo se puede cerrar una orden EN_SITIO (estado actual: ${orden.estado_code})`);
+    if (!(await esTecnicoAsignadoOAdmin(req, orden)))
+      return req.error(403, 'Solo el técnico asignado puede cerrar la orden');
 
     // Costo de repuestos consumidos
     const repuestos = await SELECT.from(LineasRepuesto).where({ orden_ID: orden.ID });
@@ -133,11 +160,20 @@ module.exports = cds.service.impl(async function () {
     return SELECT.one.from(req.subject);
   });
 
-  // Usuario actual + flag de administrador (para gating en la UI)
-  this.on('whoami', (req) => ({
-    id: req.user.id,
-    isAdmin: req.user.is('Manager'),
-  }));
+  //// ─────────  Materiales y horas: solo con la orden EN_SITIO  ───────── ////
+
+  this.before(['CREATE', 'DELETE'], LineasRepuesto, guardLineaEnSitio);
+  this.before(['CREATE', 'DELETE'], RegistrosTiempo, guardLineaEnSitio);
+
+  // Usuario actual + flag de administrador + técnico mapeado por email (gating en la UI)
+  this.on('whoami', async (req) => {
+    const tec = await SELECT.one.from(Tecnicos).columns('ID').where({ Email: req.user.id });
+    return {
+      id: req.user.id,
+      isAdmin: req.user.is('Manager'),
+      tecnicoID: tec?.ID || null,
+    };
+  });
 
   //// ─────────────────  Recepción de pedido → stock  ───────────────── ////
 

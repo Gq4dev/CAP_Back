@@ -166,9 +166,11 @@ service ServicioCampoService {
   }
   action generarReposicion() returns array of PedidosCompra;
 
-  /** Devuelve el usuario actual y si es administrador (rol Manager). */
+  /** Devuelve el usuario actual, si es administrador (rol Manager) y, si su
+      email coincide con un técnico, el ID de ese técnico (para gating en la UI). */
   function whoami() returns {
-    id      : String;
-    isAdmin : Boolean;
+    id        : String;
+    isAdmin   : Boolean;
+    tecnicoID : String;
   };
 }

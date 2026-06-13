@@ -1,7 +1,27 @@
 <mvc:View
   controllerName="fsm.desktop.controller.App"
   displayBlock="true"
+  height="100%"
   xmlns="sap.m"
   xmlns:mvc="sap.ui.core.mvc">
-  <App id="appNav"/>
+  <App id="appRoot">
+    <Page id="appShell" showHeader="true" enableScrolling="false" backgroundDesign="List">
+      <customHeader>
+        <Bar>
+          <contentLeft>
+            <Title text="{i18n>appTitle}" level="H2"/>
+          </contentLeft>
+          <contentRight>
+            <Button icon="sap-icon://person-placeholder"
+              text="{= ${user>/id} ? ${user>/id} : ${i18n>btnSinSesion} }"
+              tooltip="{i18n>btnCambiarUsuario}"
+              press=".onAbrirLogin"/>
+          </contentRight>
+        </Bar>
+      </customHeader>
+      <content>
+        <NavContainer id="appNav" height="100%"/>
+      </content>
+    </Page>
+  </App>
 </mvc:View>

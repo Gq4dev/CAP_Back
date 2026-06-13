@@ -4,6 +4,20 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Field Service — Despacho</title>
+  <!-- Dev: inyecta Basic auth (sessionStorage 'fsmAuth') en cada XHR para poder
+       cambiar de usuario desde el diálogo de login sin el prompt nativo del navegador. -->
+  <script>
+    (function () {
+      var fnSend = XMLHttpRequest.prototype.send;
+      XMLHttpRequest.prototype.send = function () {
+        try {
+          var sAuth = window.sessionStorage.getItem("fsmAuth");
+          if (sAuth) { this.setRequestHeader("Authorization", sAuth); }
+        } catch (e) { /* sessionStorage no disponible */ }
+        return fnSend.apply(this, arguments);
+      };
+    })();
+  </script>
   <script
     id="sap-ui-bootstrap"
     src="resources/sap-ui-core.js"

@@ -99,6 +99,7 @@
         <FunctionImport Name="productosBajoMinimo" Function="ServicioCampoService.productosBajoMinimo" EntitySet="Productos"/>
         <FunctionImport Name="ordenesSlaVencido" Function="ServicioCampoService.ordenesSlaVencido" EntitySet="OrdenesServicio"/>
         <ActionImport Name="generarReposicion" Action="ServicioCampoService.generarReposicion" EntitySet="PedidosCompra"/>
+        <FunctionImport Name="whoami" Function="ServicioCampoService.whoami"/>
       </EntityContainer>
       <EntityType Name="Productos">
         <Key>
@@ -335,6 +336,7 @@
         <Property Name="producto_ID" Type="Edm.Int32"/>
         <Property Name="Cantidad" Type="Edm.Int32"/>
         <Property Name="PrecioUnit" Type="Edm.Decimal" Precision="10" Scale="2"/>
+        <Property Name="Subtotal" Type="Edm.Decimal" Precision="12" Scale="2"/>
       </EntityType>
       <EntityType Name="RegistrosTiempo">
         <Key>
@@ -454,6 +456,11 @@
         <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
         <Property Name="code" Type="Edm.String" MaxLength="20" Nullable="false"/>
       </EntityType>
+      <ComplexType Name="return_ServicioCampoService_whoami">
+        <Property Name="id" Type="Edm.String"/>
+        <Property Name="isAdmin" Type="Edm.Boolean"/>
+        <Property Name="tecnicoID" Type="Edm.String"/>
+      </ComplexType>
       <Action Name="recibir" IsBound="true" EntitySetPath="in">
         <Parameter Name="in" Type="ServicioCampoService.PedidosCompra"/>
         <ReturnType Type="ServicioCampoService.PedidosCompra"/>
@@ -468,6 +475,10 @@
         <ReturnType Type="ServicioCampoService.OrdenesServicio"/>
       </Action>
       <Action Name="cerrar" IsBound="true" EntitySetPath="in">
+        <Parameter Name="in" Type="ServicioCampoService.OrdenesServicio"/>
+        <ReturnType Type="ServicioCampoService.OrdenesServicio"/>
+      </Action>
+      <Action Name="reabrir" IsBound="true" EntitySetPath="in">
         <Parameter Name="in" Type="ServicioCampoService.OrdenesServicio"/>
         <ReturnType Type="ServicioCampoService.OrdenesServicio"/>
       </Action>
@@ -488,6 +499,9 @@
       <Action Name="generarReposicion" IsBound="false">
         <ReturnType Type="Collection(ServicioCampoService.PedidosCompra)"/>
       </Action>
+      <Function Name="whoami" IsBound="false" IsComposable="false">
+        <ReturnType Type="ServicioCampoService.return_ServicioCampoService_whoami"/>
+      </Function>
       <Annotations Target="ServicioCampoService.Productos/createdAt">
         <Annotation Term="UI.HiddenFilter" Bool="true"/>
         <Annotation Term="UI.ExcludeFromNavigationContext" Bool="true"/>
@@ -820,6 +834,9 @@
       </Annotations>
       <Annotations Target="ServicioCampoService.LineasRepuesto/ID">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>
+      </Annotations>
+      <Annotations Target="ServicioCampoService.LineasRepuesto/Subtotal">
+        <Annotation Term="Core.Computed" Bool="true"/>
       </Annotations>
       <Annotations Target="ServicioCampoService.RegistrosTiempo/ID">
         <Annotation Term="Core.ComputedDefaultValue" Bool="true"/>

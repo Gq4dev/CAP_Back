@@ -79,7 +79,7 @@
                       <OverflowToolbar>
                         <ToolbarSpacer/>
                         <Button text="{i18n>btnAgregarMaterial}" icon="sap-icon://add"
-                          enabled="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"
+                          enabled="{= ${estado_code} === 'EN_SITIO' &amp;&amp; (${user>/isAdmin} || ${tecnico_ID} === ${user>/tecnicoID}) }"
                           press=".onAgregarMaterial"/>
                       </OverflowToolbar>
                     </headerToolbar>
@@ -123,7 +123,7 @@
                       <OverflowToolbar>
                         <ToolbarSpacer/>
                         <Button text="{i18n>btnRegistrarTiempo}" icon="sap-icon://add"
-                          enabled="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"
+                          enabled="{= ${estado_code} === 'EN_SITIO' &amp;&amp; (${user>/isAdmin} || ${tecnico_ID} === ${user>/tecnicoID}) }"
                           press=".onRegistrarTiempo"/>
                       </OverflowToolbar>
                     </headerToolbar>
@@ -158,13 +158,13 @@
       <OverflowToolbar>
         <ToolbarSpacer/>
         <Button text="{i18n>accAsignar}" icon="sap-icon://employee" press=".onAsignar"
-          visible="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"/>
+          visible="{= ${estado_code} === 'NUEVA' }"/>
         <Button text="{i18n>accIniciar}" icon="sap-icon://begin" press=".onIniciar"
-          visible="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"/>
+          visible="{= ${estado_code} === 'ASIGNADA' &amp;&amp; ${tecnico_ID} === ${user>/tecnicoID} }"/>
         <Button text="{i18n>accCerrar}" type="Emphasized" icon="sap-icon://accept" press=".onCerrar"
-          visible="{= ${estado_code} !== 'CERRADA' &amp;&amp; ${estado_code} !== 'CANCELADA' }"/>
+          visible="{= ${estado_code} === 'EN_SITIO' &amp;&amp; (${user>/isAdmin} || ${tecnico_ID} === ${user>/tecnicoID}) }"/>
         <Button text="{i18n>accReabrir}" type="Attention" icon="sap-icon://refresh" press=".onReabrir"
-          visible="{= (${estado_code} === 'CERRADA' || ${estado_code} === 'CANCELADA') &amp;&amp; ${user>/isAdmin} }"/>
+          visible="{= ${estado_code} === 'CERRADA' &amp;&amp; ${user>/isAdmin} }"/>
       </OverflowToolbar>
     </footer>
   </Page>

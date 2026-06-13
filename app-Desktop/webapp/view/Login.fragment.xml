@@ -1,0 +1,23 @@
+<core:FragmentDefinition
+  xmlns="sap.m"
+  xmlns:core="sap.ui.core">
+  <Dialog id="dlgLogin" title="{i18n>loginTitulo}" contentWidth="24rem" stretchOnPhone="true">
+    <content>
+      <VBox class="sapUiContentPadding">
+        <Label text="{i18n>loginUsuario}" labelFor="inLoginUser"/>
+        <Input id="inLoginUser" value="{login>/usuario}"
+          placeholder="{i18n>loginUsuarioPh}" submit=".onConfirmarLogin"/>
+        <Label text="{i18n>loginPassword}" labelFor="inLoginPass" class="sapUiSmallMarginTop"/>
+        <Input id="inLoginPass" type="Password" value="{login>/password}"
+          submit=".onConfirmarLogin"/>
+        <Text text="{i18n>loginAyuda}" class="sapUiSmallMarginTop"/>
+      </VBox>
+    </content>
+    <beginButton>
+      <Button text="{i18n>loginIngresar}" type="Emphasized" press=".onConfirmarLogin"/>
+    </beginButton>
+    <endButton>
+      <Button text="{i18n>btnCancelar}" press=".onCancelarLogin"/>
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>
