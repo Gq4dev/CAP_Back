@@ -5,6 +5,10 @@ node_modules/
 gen/
 dist/
 
+# Artefactos MTA
+mta_archives/
+*.mtar
+
 # Bases de datos locales
 *.db
 *.sqlite

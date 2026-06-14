@@ -1,0 +1,31 @@
+_schema-version: "3.1"
+ID: mi-cap-mcp
+version: 1.0.0
+description: Backend CAP (Field Service) + MCP, deploy headless a Cloud Foundry
+
+modules:
+  - name: mi-cap-mcp-srv
+    type: nodejs
+    path: mi-cap-mcp
+    parameters:
+      # instances:1 OBLIGATORIO — las sesiones MCP viven en RAM de un solo proceso.
+      # Con varias instancias el balanceador devolvería -32001.
+      instances: 1
+      memory: 512M
+      disk-quota: 512M
+      buildpack: nodejs_buildpack
+      command: npm start
+    properties:
+      NODE_ENV: production
+      # CORS_ORIGIN sin setear => server.js refleja cualquier Origin (acceso público).
+    build-parameters:
+      builder: custom
+      commands: []          # sin build propio: se empaqueta el folder; CF instala deps
+      ignore:
+        - "node_modules/"
+        - "gen/"
+        - "*.db"
+        - "*.sqlite*"
+        - "default-env.json"
+        - ".env"
+        - ".env.*"
