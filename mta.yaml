@@ -4,7 +4,8 @@ version: 1.0.0
 description: Backend CAP (Field Service) + MCP, deploy headless a Cloud Foundry
 
 modules:
-  - name: mi-cap-mcp-srv
+  # nombre = host de la ruta => https://mi-cap-mcp.cfapps.<region>.hana.ondemand.com
+  - name: mi-cap-mcp
     type: nodejs
     path: mi-cap-mcp
     parameters:
