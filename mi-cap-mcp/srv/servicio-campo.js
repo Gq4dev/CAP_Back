@@ -165,6 +165,17 @@ module.exports = cds.service.impl(async function () {
   this.before(['CREATE', 'DELETE'], LineasRepuesto, guardLineaEnSitio);
   this.before(['CREATE', 'DELETE'], RegistrosTiempo, guardLineaEnSitio);
 
+  //// ─────────  Lectura de órdenes: solo Manager ve todas  ───────── ////
+
+  // El resto de roles ve únicamente las órdenes asignadas a su técnico (mapeo por
+  // email); sin mapeo no ve ninguna. Filtra de una sola vez la lista, los
+  // contadores ($apply) y el detalle por key, y no se puede saltear desde el cliente.
+  this.before('READ', OrdenesServicio, async (req) => {
+    if (req.user.is('Manager')) return;
+    const tec = await SELECT.one.from(Tecnicos).columns('ID').where({ Email: req.user.id });
+    req.query.where(tec ? { tecnico_ID: tec.ID } : '1 = 0');
+  });
+
   // Usuario actual + flag de administrador + técnico mapeado por email (gating en la UI)
   this.on('whoami', async (req) => {
     const tec = await SELECT.one.from(Tecnicos).columns('ID').where({ Email: req.user.id });
