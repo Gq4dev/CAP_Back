@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "cds-swagger-ui-express": "^0.11.0"
+  }
+}

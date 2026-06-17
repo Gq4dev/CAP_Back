@@ -1,11 +1,6 @@
 const cds = require('@sap/cds');
 
-/**
- * CORS — permite que frontends servidos en otro origen (apps Fiori freestyle,
- * mobile, etc.) consuman el servicio OData y el endpoint MCP.
- * En desarrollo se refleja el Origin del request; en producción se restringe
- * con la variable de entorno CORS_ORIGIN (lista separada por comas).
- */
+
 cds.on('bootstrap', (app) => {
   const allowed = (process.env.CORS_ORIGIN || '').split(',').map((s) => s.trim()).filter(Boolean);
   app.use((req, res, next) => {

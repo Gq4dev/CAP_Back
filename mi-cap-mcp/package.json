@@ -7,6 +7,12 @@
     "start": "cds-serve"
   },
   "cds": {
+    "protocols": {
+      "openapi": {
+        "path": "/api-docs",
+        "impl": "cds-swagger-ui-express"
+      }
+    },
     "requires": {
       "db": {
         "kind": "sqlite",
@@ -17,12 +23,42 @@
       "auth": {
         "kind": "mocked",
         "users": {
-          "despacho": { "password": "despacho", "roles": ["Despachador"] },
-          "tecnico":  { "password": "tecnico",  "roles": ["Tecnico"] },
-          "almacen":  { "password": "almacen",  "roles": ["Almacen"] },
-          "manager":  { "password": "manager",  "roles": ["Manager"] },
-          "juan.perez@empresa.example":  { "password": "juan",  "roles": ["Tecnico"] },
-          "maria.lopez@empresa.example": { "password": "maria", "roles": ["Tecnico"] }
+          "despacho": {
+            "password": "despacho",
+            "roles": [
+              "Despachador"
+            ]
+          },
+          "tecnico": {
+            "password": "tecnico",
+            "roles": [
+              "Tecnico"
+            ]
+          },
+          "almacen": {
+            "password": "almacen",
+            "roles": [
+              "Almacen"
+            ]
+          },
+          "manager": {
+            "password": "manager",
+            "roles": [
+              "Manager"
+            ]
+          },
+          "juan.perez@empresa.example": {
+            "password": "juan",
+            "roles": [
+              "Tecnico"
+            ]
+          },
+          "maria.lopez@empresa.example": {
+            "password": "maria",
+            "roles": [
+              "Tecnico"
+            ]
+          }
         }
       },
       "[production]": {
