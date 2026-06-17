@@ -7,11 +7,8 @@
     "start": "cds-serve"
   },
   "cds": {
-    "protocols": {
-      "openapi": {
-        "path": "/api-docs",
-        "impl": "cds-swagger-ui-express"
-      }
+    "swagger": {
+      "basePath": "/api-docs"
     },
     "requires": {
       "db": {
@@ -76,9 +73,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@cap-js/openapi": "^1.5.0",
     "@cap-js/sqlite": "^2.4.0",
     "@gavdi/cap-mcp": "^1.6.0",
     "@sap/cds": "^9.9.1",
+    "cds-swagger-ui-express": "^0.11.0",
     "express": "^5.2.1"
   }
 }

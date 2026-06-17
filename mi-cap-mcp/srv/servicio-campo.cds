@@ -89,6 +89,15 @@ service ServicioCampoService {
     ) returns OrdenesServicio;
 
     @mcp: {
+      name       : 'orden-reasignar-tecnico',
+      description: 'Reasigna una orden ASIGNADA a otro técnico disponible: libera al técnico anterior y ocupa al nuevo',
+      tool       : true
+    }
+    action reasignar(
+      tecnicoID : UUID @mcp.hint: 'ID del nuevo técnico (campo ID de Tecnicos) que tomará la orden'
+    ) returns OrdenesServicio;
+
+    @mcp: {
       name       : 'orden-iniciar',
       description: 'Marca que el técnico está en sitio y comienza el trabajo (estado EN_SITIO)',
       tool       : true

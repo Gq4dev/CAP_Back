@@ -23,7 +23,8 @@ annotate ServicioCampoService.OrdenesServicio with actions {
 
 // --- RBAC granular (desactivado por ahora) ---
 // annotate ServicioCampoService.OrdenesServicio with actions {
-//   asignar @(requires: ['Despachador', 'Manager']);
+//   asignar   @(requires: ['Despachador', 'Manager']);
+//   reasignar @(requires: ['Despachador', 'Manager']);
 //   iniciar @(requires: ['Tecnico', 'Manager']);
 //   cerrar  @(requires: ['Tecnico', 'Manager']);
 // };

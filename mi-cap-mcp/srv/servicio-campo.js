@@ -90,7 +90,27 @@ module.exports = cds.service.impl(async function () {
     await UPDATE(req.subject).with({ tecnico_ID: tecnicoID, estado_code: 'ASIGNADA' });
     return SELECT.one.from(req.subject);
   });
+  this.on('reasignar', OrdenesServicio, async (req) => {
+    const { tecnicoID } = req.data;
+    const orden = await SELECT.one.from(req.subject);
+    if (!orden) return req.error(404, 'Orden no encontrada');
+    if (orden.estado_code !== 'ASIGNADA')
+      return req.error(409, `Solo se puede reasignar una orden ASIGNADA (estado actual: ${orden.estado_code})`);
+    if (orden.tecnico_ID === tecnicoID)
+      return req.error(409, 'La orden ya está asignada a ese técnico');
 
+    const tec = await SELECT.one.from(Tecnicos).where({ ID: tecnicoID });
+    if (!tec) return req.error(404, 'Técnico no encontrado');
+    if (tec.disponibilidad_code === 'AUSENTE')
+      return req.error(409, `El técnico ${tec.Nombre} está ausente`);
+
+    // Liberar al técnico anterior y ocupar al nuevo
+    if (orden.tecnico_ID)
+      await UPDATE(Tecnicos).set({ disponibilidad_code: 'DISPONIBLE' }).where({ ID: orden.tecnico_ID });
+    await UPDATE(Tecnicos).set({ disponibilidad_code: 'OCUPADO' }).where({ ID: tecnicoID });
+    await UPDATE(req.subject).with({ tecnico_ID: tecnicoID });
+    return SELECT.one.from(req.subject);
+  });
   this.on('iniciar', OrdenesServicio, async (req) => {
     const orden = await SELECT.one.from(req.subject);
     if (!orden) return req.error(404, 'Orden no encontrada');
