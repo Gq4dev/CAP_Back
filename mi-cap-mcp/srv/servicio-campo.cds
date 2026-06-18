@@ -20,12 +20,22 @@ service ServicioCampoService {
     description: 'Inventario de productos/repuestos con precio y stock',
     resource   : ['filter', 'orderby', 'select', 'top', 'skip']
   }
+  @mcp.wrap: {
+    tools: true,
+    modes: ['query', 'get'],
+    hint : 'Buscá productos por Nombre/Categoría/SKU para obtener su ID'
+  }
   entity Productos as projection on fsm.Productos;
 
   @mcp: {
     name       : 'proveedores',
     description: 'Proveedores que abastecen el inventario',
     resource   : ['filter', 'orderby', 'select', 'top', 'skip']
+  }
+  @mcp.wrap: {
+    tools: true,
+    modes: ['query', 'get'],
+    hint : 'Buscá proveedores por Nombre para obtener su ID'
   }
   entity Proveedores as projection on fsm.Proveedores;
 
@@ -48,6 +58,11 @@ service ServicioCampoService {
     description: 'Clientes a los que se presta servicio',
     resource   : ['filter', 'orderby', 'select', 'top', 'skip']
   }
+  @mcp.wrap: {
+    tools: true,
+    modes: ['query', 'get'],
+    hint : 'Buscá clientes por Nombre para obtener su ID'
+  }
   entity Clientes as projection on fsm.Clientes;
 
   entity Equipos as projection on fsm.Equipos;
@@ -58,6 +73,11 @@ service ServicioCampoService {
     name       : 'tecnicos',
     description: 'Técnicos de campo con su zona y disponibilidad',
     resource   : ['filter', 'orderby', 'select', 'top', 'skip']
+  }
+  @mcp.wrap: {
+    tools: true,
+    modes: ['query', 'get'],
+    hint : 'Buscá técnicos por Nombre/Zona/disponibilidad para obtener su ID (UUID)'
   }
   entity Tecnicos as projection on fsm.Tecnicos;
 
@@ -71,12 +91,22 @@ service ServicioCampoService {
     description: 'Tipos de servicio ofrecidos con su tarifa y SLA',
     resource   : ['filter', 'orderby', 'select', 'top']
   }
+  @mcp.wrap: {
+    tools: true,
+    modes: ['query', 'get'],
+    hint : 'Buscá tipos de servicio por Nombre para obtener su ID'
+  }
   entity CatalogoServicios as projection on fsm.CatalogoServicios;
 
   @mcp: {
     name       : 'ordenes-servicio',
     description: 'Órdenes de servicio con su estado, prioridad y técnico asignado',
     resource   : ['filter', 'orderby', 'select', 'top', 'skip', 'expand']
+  }
+  @mcp.wrap: {
+    tools: true,
+    modes: ['query', 'get'],
+    hint : 'Buscá órdenes por Numero (OS-AAAA-NNN), estado o cliente para obtener su ID'
   }
   entity OrdenesServicio as projection on fsm.OrdenesServicio actions {
     @mcp: {
